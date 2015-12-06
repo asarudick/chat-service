@@ -8,17 +8,20 @@ export default {
 		pub : {
 			host: 'localhost',
 			port: 6379,
-			family: 'IPv4'
+			family: 'IPv4',
+			url: process.env.REDIS_URL
 		},
 		sub : {
 			host: 'localhost',
 			port: 6379,
-			family: 'IPv4'
+			family: 'IPv4',
+			url: process.env.REDIS_URL
 		},
 		store : {
 			host: 'localhost',
 			port: 6379,
-			family: 'IPv4'
+			family: 'IPv4',
+			url: process.env.REDIS_URL
 		},
 	}
 };
