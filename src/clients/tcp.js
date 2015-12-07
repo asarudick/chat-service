@@ -16,7 +16,6 @@ export default class TcpChatClient extends BaseChatClient {
 
 		super._onConnect();
 
-		// winston.info(`eventHandlers.line: ${this.eventHandlers.line}`);
 	}
 
 	_onConnect () {
@@ -54,6 +53,11 @@ export default class TcpChatClient extends BaseChatClient {
 	}
 
 	_onError (error) {
+		if (error.code === 'ECONNRESET')
+		{
+			winston.info('Suppressing ECONNRESET error.');
+			return;
+		}
 		super._onError(error);
 	}
 

@@ -1,7 +1,7 @@
 export default {
 	tcpPort: 3000,
 	httpPort: 3001,
-
+	telnetPort: 22,
 	// Child objects are passed to redis.createClient() as the options parameter
 	// See https://www.npmjs.com/package/redis for more information abotu the options.
 	redis: {

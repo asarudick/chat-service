@@ -8,6 +8,7 @@ sourceMapSupport.install({
 import config from './config/app';
 import HttpChatServer from './servers/http';
 import TcpChatServer from './servers/tcp';
+import TelnetChatServer from './servers/telnet';
 import roomManager from './managers/room';
 import userManager from './managers/user';
 import Promise from 'bluebird';
@@ -24,3 +25,4 @@ userManager.setStore(store);
 // TODO: Use pool of servers.
 var httpServer = new HttpChatServer();
 var tcpServer = new TcpChatServer();
+var telnetServer = new TelnetChatServer();

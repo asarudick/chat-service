@@ -7,7 +7,6 @@ import EventEmitter from 'events';
 import winston from 'winston';
 import 'babel-polyfill';
 
-
 export default class BaseChatServer extends EventEmitter {
 	constructor () {
 		super();
