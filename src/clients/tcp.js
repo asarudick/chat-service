@@ -30,20 +30,14 @@ export default class TcpChatClient extends BaseChatClient {
 	}
 
 	_registerEvents () {
-		
-		this.eventHandlers = {
-			line: this._onLine.bind(this),
-			data: this._onData.bind(this),
-			error: this._onError.bind(this)
-		};
 
-		this.buffer.on('line', this.eventHandlers.line);
+		this.buffer.on('line', this._onLine.bind(this));
 
-		this.socket.on('data', this.eventHandlers.data);
+		this.socket.on('data', this._onData.bind(this));
 
 		this.socket.once('end', this._onDisconnect);
 
-		this.socket.on('error', this.eventHandlers.error);
+		this.socket.on('error', this._onError.bind(this));
 
 	}
 
@@ -65,10 +59,9 @@ export default class TcpChatClient extends BaseChatClient {
 
 	async disconnect () {
 		await super.disconnect();
+		this.buffer.removeAllListeners();
+		this.socket.removeAllListeners();
 		this.socket.end();
-		this.buffer.removeListener('line', this.eventHandlers.line);
-		this.socket.removeListener('data', this.eventHandlers.data);
-		this.socket.removeListener('error', this.eventHandlers.error);
 	}
 
 	static create (socket) {
