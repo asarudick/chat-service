@@ -31,8 +31,8 @@ export default class BaseChatClient extends EventEmitter {
 	 * @method _onDisconnect
 	 */
 	_onDisconnect () {
-		this.removeAllListeners();
 		winston.info(`Client ${this.id} disconnected.`);
+		this.removeAllListeners();
 
 		roomManager.removeUserFromAll(this.user);
 		userManager.remove(this.user);
