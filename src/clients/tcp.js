@@ -35,7 +35,7 @@ export default class TcpChatClient extends BaseChatClient {
 
 		this.socket.on('data', this._onData.bind(this));
 
-		this.socket.once('end', this._onDisconnect);
+		this.socket.once('end', this._onDisconnect.bind(this));
 
 		this.socket.on('error', this._onError.bind(this));
 
