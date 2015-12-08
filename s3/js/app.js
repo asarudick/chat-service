@@ -22,9 +22,12 @@ $(function () {
 		}
 	});
 
+	var emoji = window.emojiParser;
 
-	Handlebars.registerHelper('markdown', function (text) {
-		return md.render(text);
+	Handlebars.registerHelper('markdownAndEmojis', function (text) {
+		var markdownResult = md.render(text);
+		var emojiResult = emoji(markdownResult, 'bower_components/emoji-parser/emoji');
+		return emojiResult;
 	});
 
 	var source = $("#message-template").html();
