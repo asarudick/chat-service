@@ -20,30 +20,23 @@ export default class HttpChatClient extends BaseChatClient {
 		this._client = client;
 
 		this._registerEvents();
-
-		// var address = this.socket.address();
-		//
-		// winston.info(`Client connected via TCP: address => ${address.address}, port => ${address.port}, family => ${address.family}, id => ${super.user.id}`);
-
 		this._writeLine(messages.welcome);
 	}
 
 	_writeLine (message) {
-		// this.client.write(message + '\r\n');
+		this._client.emit('data', message);
 	}
 
 	_registerEvents () {
-		// this.socket.on('data', (data) => {
-		// 	super._onData(data);
-		// });
-		//
-		// this.socket.on('end', () => {
-		// 	super._onDisconnect();
-		// });
-		//
-		// this.socket.on('error', (error) => {
-		// 	super._onError(error);
-		// });
+		this._client.on('data', (data) => {
+			super._onData(data);
+		});
+		this._client.on('disconnect', () => {
+			super._onDisconnect();
+		});
+		this._client.on('error', (error) => {
+			super._onError(error);
+		});
 
 	}
 

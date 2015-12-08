@@ -11,6 +11,7 @@ export default class BaseChatServer extends EventEmitter {
 	constructor () {
 		super();
 		this.clients = {};
+		
 		// Handle any messages coming from the global redis sub client.
 		sub.on('message', this._onMessage.bind(this));
 
