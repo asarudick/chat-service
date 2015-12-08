@@ -38,7 +38,7 @@ export default class HttpChatClient extends BaseChatClient {
 
 	async disconnect () {
 		await super.disconnect();
-		this._client.removeAllListeners();
 		this._client.disconnect();
+		this._client.removeAllListeners();
 	}
 }
