@@ -1,7 +1,7 @@
 'use strict';
 
 $(function () {
-	var socket = io();
+	var socket = io('http://52.70.145.9:3001');
 	var textInput = $('#m');
 
 	$('form').submit(function () {

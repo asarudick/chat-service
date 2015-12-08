@@ -18,7 +18,7 @@ export default class HttpChatServer extends BaseChatServer {
 
 		this._httpServer.listen(config.httpPort, () => {
 			super._onListen();
-			// winston.info(`HTTP Chat Server listening on port ${config.httpPort}`);
+			winston.info(`HTTP Chat Server listening on port ${config.httpPort}`);
 		});
 	}
 
@@ -28,10 +28,6 @@ export default class HttpChatServer extends BaseChatServer {
 		this._server.on('connection', (socket) => {
 			var client = HttpChatClient.create(socket);
 			this._onConnect(client);
-		});
-
-		this._server.on('listening', () => {
-			winston.info(`HTTP Chat Server listening on port ${config.httpPort}`);
 		});
 
 		// Occurs when user calls `.close()`(prevents any new connections) and all connections are closed.

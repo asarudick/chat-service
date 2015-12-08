@@ -44,6 +44,7 @@ export default class BaseChatClient extends EventEmitter {
 	 * @method _onConnect
 	 */
 	_onConnect () {
+		winston.info(`Client ${this.user.id} connected.`);
 
 		this._writeLine(messages.welcome);
 
