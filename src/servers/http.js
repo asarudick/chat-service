@@ -6,7 +6,7 @@ import http from 'http';
 import HttpChatClient from '../clients/http';
 
 export default class HttpChatServer extends BaseChatServer {
-	
+
 	constructor () {
 		super();
 
@@ -16,7 +16,7 @@ export default class HttpChatServer extends BaseChatServer {
 
 		this._registerEvents();
 
-		this._httpServer.listen(config.port, () => {
+		this._httpServer.listen(config.httpPort, () => {
 			super._onListen();
 			// winston.info(`HTTP Chat Server listening on port ${config.httpPort}`);
 		});
@@ -31,7 +31,7 @@ export default class HttpChatServer extends BaseChatServer {
 		});
 
 		this._server.on('listening', () => {
-			winston.info(`HTTP Chat Server listening on port ${config.tcpPort}`);
+			winston.info(`HTTP Chat Server listening on port ${config.httpPort}`);
 		});
 
 		// Occurs when user calls `.close()`(prevents any new connections) and all connections are closed.
