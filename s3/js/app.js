@@ -23,7 +23,7 @@ $(function () {
 		scrollBody.animate({
 				scrollTop: $(document).height() - $(window).height()
 			},
-			1400
+			200
 		);
 	};
 
