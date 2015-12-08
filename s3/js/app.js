@@ -1,10 +1,30 @@
 'use strict';
 
 $(function () {
-	Handlebars.registerHelper('breaklines', function (text) {
-		text = Handlebars.Utils.escapeExpression(text);
-		text = text.replace(/(\r\n|\n|\r)/gm, '<br>');
-		return new Handlebars.SafeString(text);
+	var md = new Remarkable({
+		html: false, // Enable HTML tags in source
+		xhtmlOut: false, // Use '/' to close single tags (<br />)
+		breaks: false, // Convert '\n' in paragraphs into <br>
+		langPrefix: 'language-', // CSS language prefix for fenced blocks
+		linkify: false, // Autoconvert URL-like text to links
+
+		// Enable some language-neutral replacement + quotes beautification
+		typographer: false,
+
+		// Double + single quotes replacement pairs, when typographer enabled,
+		// and smartquotes on. Set doubles to '«»' for Russian, '„“' for German.
+		quotes: '“”‘’',
+
+		// Highlighter function. Should return escaped HTML,
+		// or '' if the source string is not changed
+		highlight: function () {
+			return '';
+		}
+	});
+
+
+	Handlebars.registerHelper('markdown', function (text) {
+		return md.render(text);
 	});
 
 	var source = $("#message-template").html();
@@ -67,8 +87,7 @@ $(function () {
 
 	hostModal.on('hidden.bs.modal', function () {
 		var host = $('#host').val();
-		if (host.search(/^https?/) === -1)
-		{
+		if (host.search(/^https?/) === -1) {
 			host = 'http://' + host;
 		}
 		startChat(host);
