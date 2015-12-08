@@ -34,6 +34,28 @@ $(function () {
 	});
 
 	socket.on('chat.data', function (msg) {
-		messages.append(template({message: msg}));
+		writeLine(msg);
+	});
+
+	socket.on('disconnect', function () {
+		writeLine('You have been disconnected.');
+	});
+	socket.on('error', function (error) {
+		writeLine('Connection error: ' + error);
+	});
+	socket.on('connect', function () {
+		writeLine('You have connected to the chat service.');
+	});
+	socket.on('reconnecting', function (attempt) {
+		writeLine('Attempting to reconnect. Attempt #' + attempt);
+	});
+	socket.on('reconnect', function (attempt) {
+		writeLine('Reconnected after ' + attempt + ' attempts.');
+	});
+	socket.on('reconnect_error', function (error) {
+		writeLine('Reconnect error: ' + error);
+	});
+	socket.on('reconnect_failed', function () {
+		writeLine('Unable to reconnect.');
 	});
 });
