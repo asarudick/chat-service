@@ -6,7 +6,6 @@ import winston from 'winston';
 
 export default class HttpChatClient extends BaseChatClient {
 
-	// TODO: Introduce scoped variables to reduce number of chain lookups by interpreter.
 	constructor (client) {
 		super();
 
@@ -35,5 +34,11 @@ export default class HttpChatClient extends BaseChatClient {
 
 	static create (client) {
 		return new HttpChatClient(client);
+	}
+
+	async disconnect () {
+		await super.disconnect();
+		this._client.removeAllListeners();
+		this._client.disconnect();
 	}
 }
