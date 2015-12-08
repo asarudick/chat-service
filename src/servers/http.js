@@ -30,16 +30,7 @@ export default class HttpChatServer extends BaseChatServer {
 
 
 	_registerEvents() {
-
-		this._server.on('checkContinue', () => {
-			winston.info(`checkContinue fired.`);
-		});
-		this._server.on('request', () => {
-			winston.info(`request fired.`);
-		});
-		this._server.on('upgrade', () => {
-			winston.info(`upgrade fired.`);
-		});
+		
 		this._server.on('connection', (socket) => {
 			winston.info('HTTP Client connected.');
 			var client = HttpChatClient.create(socket);

@@ -17,6 +17,10 @@ import { pub, sub, store } from './redis/clients';
 
 import 'babel-polyfill';
 
+process.on('uncaughtException', function (err) {
+	winston.info(`Uncaught exception occurred, but keeping process alive. Error: ${err}`);
+});
+
 // Object managers.
 roomManager.setStore(store);
 userManager.setStore(store);
