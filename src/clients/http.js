@@ -11,10 +11,9 @@ export default class HttpChatClient extends BaseChatClient {
 		super();
 
 		this._client = client;
-		super._onConnect(client);
+		super._onConnect();
 
 		this._registerEvents();
-		this._writeLine(messages.welcome);
 	}
 
 	_writeLine (message) {

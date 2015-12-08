@@ -17,6 +17,7 @@ export default class TcpChatServer extends BaseChatServer {
 	_registerEvents () {
 
 		this._server.on('connection', (socket) => {
+			winston.info('TCP Client connected.');
 			var client = TcpChatClient.create(socket);
 			this._onConnect(client);
 		});

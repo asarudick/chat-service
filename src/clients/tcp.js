@@ -14,7 +14,7 @@ export default class TcpChatClient extends BaseChatClient {
 
 		this._registerEvents.bind(this)();
 
-		super._onConnect();
+		this._onConnect();
 
 	}
 

@@ -9,11 +9,7 @@ import EventEmitter from 'events';
 import { pub, sub, store } from '../redis/clients';
 import roomManager from '../managers/room';
 import userManager from '../managers/user';
-
-const messages = {
-	welcome: 'Welcome to the chat server.',
-	commandDoesNotExist: 'Command does not exist.'
-};
+import messages from '../messages/index';
 
 
 export default class BaseChatClient extends EventEmitter {

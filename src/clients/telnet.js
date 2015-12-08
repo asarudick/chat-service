@@ -25,7 +25,7 @@ export default class TelnetChatClient extends BaseChatClient {
 		// make the client emit 'window size' events
 		client.do.window_size();
 
-		super._onConnect(client);
+		super._onConnect();
 	}
 
 	_writeLine (message) {

@@ -9,6 +9,7 @@ export default class TelnetChatServer extends BaseChatServer {
 		super();
 
 		this._server = telnet.createServer((client) => {
+			winston.info('Telnet Client connected.');
 			var client = TelnetChatClient.create(client);
 			this._onConnect(client);
 		});
