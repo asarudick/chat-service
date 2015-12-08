@@ -10,8 +10,7 @@ $(function () {
 	var source = $("#message-template").html();
 	var template = Handlebars.compile(source);
 
-	var socket = io('http://localhost:3001');
-	// var socket = io('http://52.70.145.9:3001');
+	var socket = io('http://52.70.145.9:3001');
 	var textInput = $('#m');
 	var messages = $('#messages');
 
