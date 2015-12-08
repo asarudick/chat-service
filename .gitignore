@@ -39,3 +39,5 @@ node_modules
 
 # Build directory
 dist
+
+bower_components
