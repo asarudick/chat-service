@@ -4,28 +4,16 @@ import uuid from 'node-uuid';
 
 class UserManager extends Manager {
 
-	add (user) {
-		return this.store
-				.multi()
-					.setnx(`user.name:${user.id}`, user.name)
-					.setnx(`user.id:${user.name}`, user.id)
-				.execAsync();
+	add (name) {
+		return this.store.setnxAsync(`user.name:${name}`, 1);
 	}
 
 	remove (user) {
-		return this.store
-				.multi()
-					.del(`user.name:${user.id}`)
-					.del(`user.id:${user.name}`)
-				.execAsync();
+		return this.store.delAsync(`user.name:${user.name}`);
 	}
 
 	nameExists (name) {
-		return this.store.existsAsync(`user.id:${name}`);
-	}
-
-	getUserId (name) {
-		return this.store.getAsync(`user.id:${name}`);
+		return this.store.existsAsync(`user.name:${name}`);
 	}
 
 	getUserName (id) {

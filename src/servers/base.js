@@ -25,19 +25,19 @@ export default class BaseChatServer extends EventEmitter {
 	_onMessage (channel, message) {
 
 		var that = this;
-
+		var room = channel;
 		var msg = JSON.parse(message);
 
 		// TODO: Handle private messaging. Add reserved conversation channel?
 		// Dispatch messages to all clients in the rooms.
-		roomManager.getAllUserIds(channel).then( (userIds) => {
+		roomManager.getAllUserIds(room).then( (userIds) => {
 
 			for (var i = 0, length = userIds.length; i < length; i++) {
 
 				var client = that.clients[userIds[i]];
 
 				if (client) {
-					client.emit('channel.' + msg.type, msg);
+					client.emit('room.' + msg.type, msg);
 				}
 			}
 		})

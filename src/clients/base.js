@@ -8,7 +8,7 @@ import LoginPrompt from '../prompts/login';
 import EventEmitter from 'events';
 import { pub, sub, store } from '../redis/clients';
 import roomManager from '../managers/room';
-import userManager from '../managers/room';
+import userManager from '../managers/user';
 
 const messages = {
 	welcome: 'Welcome to the chat server.',
@@ -31,7 +31,7 @@ export default class BaseChatClient extends EventEmitter {
 	 * @method _onDisconnect
 	 */
 	_onDisconnect () {
-		winston.info(`Client ${this.id} disconnected.`);
+		winston.info(`Client ${this.user.id} disconnected.`);
 		this.removeAllListeners();
 
 		roomManager.removeUserFromAll(this.user);
@@ -45,21 +45,21 @@ export default class BaseChatClient extends EventEmitter {
 	 */
 	_onConnect () {
 
-		// Unique identifier for the client, but not the user.
-		this.id = uuid.v4();
-
-		winston.info(`Client ${this.id} connected.`);
-
 		this._writeLine(messages.welcome);
 
 		this._requestLogin();
 
-		this.on('channel.message', this._onChannelMessage.bind(this));
-		this.on('channel.notification', this._onNotificationMessage.bind(this));
+		this.on('room.message', this._onRoomMessage.bind(this));
+		this.on('room.notification', this._onNotificationMessage.bind(this));
 
 	}
 
-	_onChannelMessage (message) {
+	/**
+	 * Handles any message from the current room.
+	 * @method _onRoomMessage
+	 * @param  {Object}          message The message sent in the room.
+	 */
+	_onRoomMessage (message) {
 
 		// Filter out any messages from this user.
 		if (message.name === this.user.name)
@@ -70,6 +70,12 @@ export default class BaseChatClient extends EventEmitter {
 		this._writeLine(`${message.user}: ${message.text}`);
 	}
 
+	/**
+	 * Handles any room notification.
+	 * @method _onNotificationMessage
+	 * @param  {Object}               message The notification message.
+	 */
+	// TODO: Use an object to map notifcation types with their respective handler.
 	_onNotificationMessage (message) {
 		if (message.notificationType === 'userJoin' )
 		{
@@ -88,14 +94,21 @@ export default class BaseChatClient extends EventEmitter {
 		}
 	}
 
+	/**
+	 * Wraps login related functionality.
+	 * @method _requestLogin
+	 */
 	_requestLogin () {
+		// Create.
 		var loginPrompt = new LoginPrompt();
 
+		// Subscribe.
 		loginPrompt.on('login', (name) => {
 			this.user.name = name;
 			this.emit('login', this.user);
 		});
 
+		// Start.
 		this._startPrompt( loginPrompt );
 	}
 
@@ -109,7 +122,7 @@ export default class BaseChatClient extends EventEmitter {
 		// Strip whitespace/line terminators.
 		data = data.toString().trim();
 
-		winston.info(`Received from ${this.id}: ${data}`);
+		winston.info(`Received from ${this.user.id}: ${data}`);
 
 		// Should already be started at this point.
 		if ( this.prompt )
@@ -131,9 +144,10 @@ export default class BaseChatClient extends EventEmitter {
 
 		if (parseResult)
 		{
-			// Find the command. Case-insensitive.
+			// Find the command. NOTE: Case-insensitive.
 			var command = commands[parseResult.command] || commands[parseResult.command.toLowerCase()] || commands[parseResult.command.toUpperCase()];
 
+			// We found a command. Execute using provided parameters and print the result.
 			if (command)
 			{
 				var message;
@@ -158,6 +172,7 @@ export default class BaseChatClient extends EventEmitter {
 				return;
 			}
 
+			// Inform the user that we couldn't find the specified command.
 			this._writeLine(messages.commandDoesNotExist);
 
 			return;
@@ -217,6 +232,7 @@ export default class BaseChatClient extends EventEmitter {
 
 		var result;
 
+		// Send the prompt whatever the user sent, and get the result.
 		try {
 			result = (await this.prompt.executor.next( data )).value;
 		}
@@ -225,14 +241,21 @@ export default class BaseChatClient extends EventEmitter {
 			winston.error(e);
 		}
 
+		// Write out the result of evaluating the user input.
 		this._writeLine(result.message);
 
+		// If the prompt is successfully completed, remove it.
 		if (result.success)
 		{
 			this.prompt = null;
 		}
 	}
 
+	/**
+	 * Subclasses implement the actual disconnection. This will just do anything
+	 * necessary prior to disconnection regardless of client type.
+	 * @method disconnect
+	 */
 	async disconnect () {
 		await this._writeLine('BYE');
 	}

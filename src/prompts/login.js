@@ -31,7 +31,6 @@ export default class LoginPrompt extends Prompt {
 					}
 
 					var added = await userManager.add(name);
-					var id = await userManager.getUserId(name);
 
 					that.emit('login', name);
 
