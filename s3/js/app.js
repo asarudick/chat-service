@@ -13,6 +13,19 @@ $(function () {
 	var socket = io('http://52.70.145.9:3001');
 	var textInput = $('#m');
 	var messages = $('#messages');
+	var scrollBody = $('html, body');
+
+	function writeLine(message) {
+		messages.append(template({
+			'message': message
+		}));
+
+		scrollBody.animate({
+				scrollTop: $(document).height() - $(window).height()
+			},
+			1400
+		);
+	};
 
 	$('form').submit(function () {
 		socket.emit('chat.data', textInput.val());
