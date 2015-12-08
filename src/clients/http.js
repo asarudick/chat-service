@@ -4,11 +4,6 @@ import commands from '../commands/index';
 import BaseChatClient from './base';
 import winston from 'winston';
 
-const messages = {
-	welcome: 'Welcome to the chat server.',
-	commandDoesNotExist: 'Command does not exist.'
-};
-
 export default class HttpChatClient extends BaseChatClient {
 
 	// TODO: Introduce scoped variables to reduce number of chain lookups by interpreter.
@@ -24,11 +19,11 @@ export default class HttpChatClient extends BaseChatClient {
 	}
 
 	_writeLine (message) {
-		this._client.emit('data', message);
+		this._client.emit('chat.data', message);
 	}
 
 	_registerEvents () {
-		this._client.on('data', (data) => {
+		this._client.on('chat.data', (data) => {
 			super._onData(data);
 		});
 		this._client.on('disconnect', () => {
