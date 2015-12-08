@@ -16,10 +16,6 @@ class UserManager extends Manager {
 		return this.store.existsAsync(`user.name:${name}`);
 	}
 
-	getUserName (id) {
-		return this.store.getAsync(`user.name:${id}`);
-	}
-
 };
 
 const userManager = new UserManager();
