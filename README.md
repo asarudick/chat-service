@@ -6,11 +6,17 @@
 
 # Build
 
+## Service
 ```
 $ git clone https://github.com/Shabonkerz/chat-service.git
 $ npm install
-$ bower install
 $ gulp js
+```
+
+## Frontend
+```
+$ npm install -g bower
+$ bower install
 ```
 
 # Configuration
