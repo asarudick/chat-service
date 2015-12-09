@@ -1,6 +1,7 @@
 # Prerequisites
 
-- node
+- node v0.12.x
+- npm
 - git
 - bower
 - Access to a Redis node. (Installing Redis and running `redis-server` would be sufficient.)
@@ -11,6 +12,7 @@
 ```
 $ git clone https://github.com/Shabonkerz/chat-service.git
 $ npm install
+$ npm install -g gulp
 $ gulp js
 ```
 
