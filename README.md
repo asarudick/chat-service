@@ -2,7 +2,8 @@
 
 - node
 - git
-- Access to a Redis node.
+- bower
+- Access to a Redis node. (Installing Redis and running `redis-server` would be sufficient.)
 
 # Build
 
@@ -13,9 +14,15 @@ $ npm install
 $ gulp js
 ```
 
-## Frontend
+## HTTP Client
+If you don't have bower, run this first:
+
 ```
 $ npm install -g bower
+```
+Then:
+
+```
 $ bower install
 ```
 
