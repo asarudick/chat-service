@@ -1,6 +1,8 @@
 'use strict';
 
 $(function () {
+
+	// Markdown parser.
 	var md = new Remarkable({
 		html: false, // Enable HTML tags in source
 		xhtmlOut: false, // Use '/' to close single tags (<br />)
@@ -24,6 +26,7 @@ $(function () {
 
 	var emoji = window.emojiParser;
 
+	// Handlebars stuff.
 	Handlebars.registerHelper('markdownAndEmojis', function (text) {
 		var markdownResult = md.render(text);
 
@@ -46,6 +49,11 @@ $(function () {
 	var chatMessageTemplate = Handlebars.compile(chatMessageSource);
 	var roomMessageTemplate = Handlebars.compile(roomMessageSource);
 	var roomNotificationTemplate = Handlebars.compile(roomNotificationSource);
+
+
+
+
+
 
 	var textInput = $('#m');
 	var messages = $('#messages');
@@ -126,15 +134,19 @@ $(function () {
 		});
 	}
 
-
-
+	hostModal.on('shown.bs.modal', function () {
+		$('#host').focus();
+	});
 	hostModal.on('hidden.bs.modal', function () {
 		var host = $('#host').val();
+
+		// Insert http:// if neither http or https is present.
 		if (host.search(/^https?/) === -1) {
 			host = 'http://' + host;
 		}
 		startChat(host);
 	});
 
+	// Show host prompt.
 	hostModal.modal();
 });

@@ -37,10 +37,13 @@
 						<h4 class="modal-title">Connect to a host</h4>
 					</div>
 					<div class="modal-body">
-						<label for="host">Host address: </label><input id="host" type="url">
+						<div class="form-group">
+							<label for="host">Host address</label>
+							<input type="url" class="form-control" id="host" placeholder="Enter host address with port. eg. localhost:3001">
+						</div>
 					</div>
 					<div class="modal-footer">
-						<button type="button" class="btn btn-primary" data-dismiss="modal">Start Chat</button>
+						<button type="submit" class="btn btn-primary" data-dismiss="modal">Start Chat</button>
 					</div>
 				</div>
 				<!-- /.modal-content -->
