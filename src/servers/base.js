@@ -8,10 +8,11 @@ import winston from 'winston';
 import 'babel-polyfill';
 
 export default class BaseChatServer extends EventEmitter {
-	constructor () {
+	constructor (port) {
 		super();
 		this.clients = {};
-		
+		this._port = port;
+
 		// Handle any messages coming from the global redis sub client.
 		sub.on('message', this._onMessage.bind(this));
 

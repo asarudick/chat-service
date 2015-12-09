@@ -5,12 +5,12 @@ import TcpChatClient from '../clients/tcp';
 import config from '../config/app';
 
 export default class TcpChatServer extends BaseChatServer {
-	constructor () {
-		super();
+	constructor (port) {
+		super(port);
 
 		this._server = net.createServer();
 		this._registerEvents();
-		this._server.listen(config.tcpPort);
+		this._server.listen(config.tcp.port);
 
 	}
 
@@ -23,7 +23,7 @@ export default class TcpChatServer extends BaseChatServer {
 		});
 
 		this._server.on('listening', () => {
-			winston.info(`TCP Chat Server listening on port ${config.tcpPort}`);
+			winston.info(`TCP Chat Server listening on port ${this._port}`);
 		});
 
 		// Occurs when user calls `.close()`(prevents any new connections) and all connections are closed.
@@ -39,4 +39,7 @@ export default class TcpChatServer extends BaseChatServer {
 		});
 	}
 
+	static create (port) {
+		return new TcpChatServer(port);
+	}
 }

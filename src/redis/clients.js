@@ -9,6 +9,8 @@ Promise.promisifyAll(redis.Multi.prototype);
 //  Redis pub/sub clients.
 var pub = redis.createClient(config.redis.pub);
 
+pub.setMaxListeners(config.redis.pub.maxListeners);
+
 pub
 	.on('connect', () => {
 		winston.info(`Redis pub client connected to ${pub.address}.`);
@@ -24,6 +26,8 @@ pub
 	});
 
 var sub = redis.createClient(config.redis.sub);
+
+sub.setMaxListeners(config.redis.sub.maxListeners);
 
 sub
 	.on('connect', () => {
@@ -43,6 +47,8 @@ sub.subscribe('global');
 
 // Redis cache store.
 var store = redis.createClient(config.redis.store);
+
+store.setMaxListeners(config.redis.store.maxListeners);
 
 store
 	.on('connect', () => {

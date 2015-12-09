@@ -5,23 +5,23 @@ import TelnetChatClient from '../clients/telnet';
 import config from '../config/app';
 
 export default class TelnetChatServer extends BaseChatServer {
-	constructor () {
-		super();
+	constructor (port) {
+		super(port);
 
 		this._server = telnet.createServer((client) => {
 			winston.info('Telnet Client connected.');
 			var client = TelnetChatClient.create(client);
 			this._onConnect(client);
 		});
-		this._registerEvents();
-		this._server.listen(config.telnetPort);
+		this._registerEvents.bind(this)();
+		this._server.listen(this._port);
 
 	}
 
 	_registerEvents () {
 
 		this._server.on('listening', () => {
-			winston.info(`Telnet Chat Server listening on port ${config.telnetPort}`);
+			winston.info(`Telnet Chat Server listening on port ${this._port}`);
 		});
 
 		// Occurs when user calls `.close()`(prevents any new connections) and all connections are closed.
@@ -37,4 +37,7 @@ export default class TelnetChatServer extends BaseChatServer {
 		});
 	}
 
+	static create (port) {
+		return new TelnetChatServer(port);
+	}
 }

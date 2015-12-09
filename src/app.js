@@ -18,7 +18,7 @@ import { pub, sub, store } from './redis/clients';
 import 'babel-polyfill';
 
 process.on('uncaughtException', function (err) {
-	winston.info(`Uncaught exception occurred, but keeping process alive. Error: ${err}`);
+	winston.info(`Uncaught exception occurred, but keeping process alive. Error: ${err} ${err.stack}`);
 });
 
 // Object managers.
@@ -26,7 +26,18 @@ roomManager.setStore(store);
 userManager.setStore(store);
 
 // Servers.
-// TODO: Use pool of servers.
-var httpServer = new HttpChatServer();
-var tcpServer = new TcpChatServer();
-var telnetServer = new TelnetChatServer();
+if (config.http.enabled) {
+	for (const port of config.http.ports) {
+		HttpChatServer.create(port);
+	}
+}
+if (config.tcp.enabled) {
+	for (const port of config.tcp.ports) {
+		TcpChatServer.create(port);
+	}
+}
+if (config.telnet.enabled) {
+	for (const port of config.telnet.ports) {
+		TelnetChatServer.create(port);
+	}
+}

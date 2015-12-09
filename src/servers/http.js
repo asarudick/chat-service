@@ -10,9 +10,8 @@ import HttpChatClient from '../clients/http';
 
 export default class HttpChatServer extends BaseChatServer {
 
-	constructor() {
-		super();
-
+	constructor(port) {
+		super(port);
 		this._app = express();
 		this._app.use(cors());
 
@@ -22,15 +21,15 @@ export default class HttpChatServer extends BaseChatServer {
 
 		this._registerEvents();
 
-		this._httpServer.listen(config.httpPort, () => {
+		this._httpServer.listen(config.http.port, () => {
 			super._onListen();
-			winston.info(`HTTP Chat Server listening on port ${config.httpPort}`);
+			winston.info(`HTTP Chat Server listening on port ${this._port}`);
 		});
 	}
 
 
 	_registerEvents() {
-		
+
 		this._server.on('connection', (socket) => {
 			winston.info('HTTP Client connected.');
 			var client = HttpChatClient.create(socket);
@@ -48,5 +47,9 @@ export default class HttpChatServer extends BaseChatServer {
 			// `close()` automatically called when error occurs.
 			winston.info('Closing server due to error.');
 		});
+	}
+
+	static create (port) {
+		return new HttpChatServer(port);
 	}
 }
