@@ -14,7 +14,7 @@ $ npm install
 $ gulp js
 ```
 
-## HTTP Client
+## Web Client
 If you don't have bower, run this first:
 
 ```
