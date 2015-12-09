@@ -55,10 +55,11 @@ $(function () {
 
 
 
-	var textInput = $('#m');
+	var textInput = $('#message');
 	var messages = $('#messages');
 	var scrollBody = $('html, body');
 	var hostModal = $('#hostModal');
+	var hostInput = $('#host');
 
 	function scrollToBottom() {
 		scrollBody.animate({
@@ -132,13 +133,15 @@ $(function () {
 			textInput.val('');
 			return false;
 		});
+
+		$('#message').focus();
 	}
 
 	hostModal.on('shown.bs.modal', function () {
-		$('#host').focus();
+		hostInput.focus();
 	});
 	hostModal.on('hidden.bs.modal', function () {
-		var host = $('#host').val();
+		var host = hostInput.val();
 
 		// Insert http:// if neither http or https is present.
 		if (host.search(/^https?/) === -1) {
@@ -149,4 +152,13 @@ $(function () {
 
 	// Show host prompt.
 	hostModal.modal();
+
+	hostInput.keypress(function (e) {
+		var key = e.which;
+		if (key === 13 && hostInput.val())
+		{
+			hostModal.modal('hide');
+		}
+	});
+
 });
