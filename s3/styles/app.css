@@ -34,3 +34,19 @@ form button {
 #messages li:nth-child(odd) {
 	background: #f9f9f9;
 }
+#messages li.chat-message {
+	color: #555;
+}
+#messages li.room-message > span.user {
+	color: #333;
+	font-weight: bold;
+}
+#messages li.room-message > span.text {
+	color: #666;
+}
+#messages li.room-message > span.text > img.emoji {
+	max-height: 22px;
+}
+#messages li.room-notification {
+	color: purple;
+}

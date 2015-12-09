@@ -6,8 +6,17 @@
 		<link rel="stylesheet" href="styles/bootstrap.min.css" media="screen" title="no title" charset="utf-8">
 		<link rel="stylesheet" href="styles/site.min.css" media="screen" title="no title" charset="utf-8">
 		<link rel="stylesheet" href="styles/app.css" media="screen" title="no title" charset="utf-8">
-		<script id="message-template" type="text/x-handlebars-template">
-			<li>{{{markdownAndEmojis message}}}</li>
+		<script id="chat-message-template" type="text/x-handlebars-template">
+			<li class="chat-message">{{breaklines message}}</li>
+		</script>
+		<script id="room-message-template" type="text/x-handlebars-template">
+			<li class="room-message">
+				<span class="user">{{message.user}}:</span>
+				<span class="text">{{{markdownAndEmojis message.text}}}</span>
+			</li>
+		</script>
+		<script id="room-notification-template" type="text/x-handlebars-template">
+			<li class="room-notification">{{message.text}}</li>
 		</script>
 	</head>
 

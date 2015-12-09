@@ -6,7 +6,7 @@ $(function () {
 		xhtmlOut: false, // Use '/' to close single tags (<br />)
 		breaks: false, // Convert '\n' in paragraphs into <br>
 		langPrefix: 'language-', // CSS language prefix for fenced blocks
-		linkify: false, // Autoconvert URL-like text to links
+		linkify: true, // Autoconvert URL-like text to links
 
 		// Enable some language-neutral replacement + quotes beautification
 		typographer: false,
@@ -26,28 +26,62 @@ $(function () {
 
 	Handlebars.registerHelper('markdownAndEmojis', function (text) {
 		var markdownResult = md.render(text);
-		var emojiResult = emoji(markdownResult, 'bower_components/emoji-parser/emoji');
+
+		// Strip the <p> element that wraps around it.
+		var strippedResult = markdownResult.replace(/^<p>|<\/p>$|<p><\/p>/gm, '');
+		var emojiResult = emoji(strippedResult, 'bower_components/emoji-parser/emoji');
 		return emojiResult;
 	});
 
-	var source = $("#message-template").html();
-	var template = Handlebars.compile(source);
+	Handlebars.registerHelper('breaklines', function (text) {
+		text = Handlebars.Utils.escapeExpression(text);
+		text = text.replace(/(\r\n|\n|\r)/gm, '<br>');
+		return new Handlebars.SafeString(text);
+	});
+
+	var chatMessageSource = $("#chat-message-template").html();
+	var roomMessageSource = $("#room-message-template").html();
+	var roomNotificationSource = $("#room-notification-template").html();
+
+	var chatMessageTemplate = Handlebars.compile(chatMessageSource);
+	var roomMessageTemplate = Handlebars.compile(roomMessageSource);
+	var roomNotificationTemplate = Handlebars.compile(roomNotificationSource);
 
 	var textInput = $('#m');
 	var messages = $('#messages');
 	var scrollBody = $('html, body');
 	var hostModal = $('#hostModal');
 
-	function writeLine(message) {
-		messages.append(template({
-			'message': message
-		}));
-
+	function scrollToBottom() {
 		scrollBody.animate({
 				scrollTop: $(document).height() - $(window).height()
 			},
 			200
 		);
+	}
+
+	function writeLine(message) {
+		messages.append(chatMessageTemplate({
+			'message': message
+		}));
+
+		scrollToBottom();
+	};
+
+	function writeRoomMessage(message) {
+		messages.append(roomMessageTemplate({
+			'message': message
+		}));
+
+		scrollToBottom();
+	};
+
+	function writeRoomNotification(message) {
+		messages.append(roomNotificationTemplate({
+			'message': message
+		}));
+
+		scrollToBottom();
 	};
 
 	function startChat(host) {
@@ -55,6 +89,12 @@ $(function () {
 
 		socket.on('chat.data', function (msg) {
 			writeLine(msg);
+		});
+		socket.on('room.message', function (msg) {
+			writeRoomMessage(msg);
+		});
+		socket.on('room.notification', function (msg) {
+			writeRoomNotification(msg);
 		});
 
 		socket.on('disconnect', function () {
