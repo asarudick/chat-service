@@ -21,7 +21,7 @@ export default class HttpChatServer extends BaseChatServer {
 
 		this._registerEvents();
 
-		this._httpServer.listen(config.http.port, () => {
+		this._httpServer.listen(this._port, () => {
 			super._onListen();
 			winston.info(`HTTP Chat Server listening on port ${this._port}`);
 		});
