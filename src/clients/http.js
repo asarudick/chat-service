@@ -63,7 +63,7 @@ export default class HttpChatClient extends BaseChatClient {
 			if (message.user === this.user.name) {
 				this._client.emit('room.notification', {text: ` * user has left ${this.user.room}: ${message.user} (** this is you)`, type: message.notificationType });
 			}
-			this._client.emit('room.notification', {text:` * user has left ${this.user.room}: ${message.user} (** this is you)`, type: message.notificationType });
+			this._client.emit('room.notification', {text:` * user has left ${this.user.room}: ${message.user}`, type: message.notificationType });
 		}
 	}
 
