@@ -4,7 +4,7 @@ import Command from './command';
 import Promise from 'bluebird';
 import CommandError from '../errors/command';
 import winston from 'winston';
-import lodash from 'lodash';
+import _ from 'lodash';
 
 const commands = {};
 

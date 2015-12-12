@@ -1,5 +1,6 @@
 import winston from 'winston';
 import EventEmitter from 'events';
+import _ from 'lodash';
 
 export default class TcpBuffer extends EventEmitter {
 
@@ -21,7 +22,7 @@ export default class TcpBuffer extends EventEmitter {
 
 		var lastLine = lines[lines.length - 1];
 
-		lines.slice( 0, lines.length - 1 ).forEach( (line) => {
+		_.forEach( lines.slice( 0, lines.length - 1 ), (line) => {
 			this.emit('line', line.trim());
 		});
 
