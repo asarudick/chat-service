@@ -4,6 +4,7 @@ import Command from './command';
 import Promise from 'bluebird';
 import CommandError from '../errors/command';
 import winston from 'winston';
+import lodash from 'lodash';
 
 const commands = {};
 
@@ -24,7 +25,9 @@ commands.join = new Command (
 
 		var roomUsers = await roomManager.getAllUsers(room);
 
-		var userList = roomUsers.map( (userName) => {
+		// Using lodash's implementation since it is thoroughly more performant
+		// since it punts on the edge cases.
+		var userList = _.map(roomUsers, (userName) => {
 
 			var str = `* ${userName}`;
 
