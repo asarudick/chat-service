@@ -10,7 +10,7 @@ export default class TcpChatServer extends BaseChatServer {
 
 		this._server = net.createServer();
 		this._registerEvents();
-		this._server.listen(config.tcp.port);
+		this._server.listen(this._port);
 
 	}
 
